@@ -1,13 +1,6 @@
 ﻿#include <iostream>
-#include <string.h>
+#include <string>
 #include <windows.h>
-
-#define show(text) std::cout << text << std::endl;
-
-// !создать список
-// добавить в список
-// !удолить из списка 
-// !почистить список
 
 struct node
 {
@@ -50,13 +43,17 @@ struct list
 
         node* firstNode = head;
         node* nowNode = nullptr;
-        node* lastNode = nullptr;
+
+        if (head == nullptr)
+        {
+            std::cout << "List is note created\n";
+            return;
+        }
 
         while (1)
         {
             nowNode = firstNode->next;
-            lastNode = nowNode->next;
-
+          
             if (checkstr == firstNode->str)
             {
                 head = newNode;
@@ -85,6 +82,12 @@ struct list
         node* firstNode = head;
         node* nowNode = nullptr;
         node* lastNode = nullptr;
+
+        if (head == nullptr)
+        {
+            std::cout << "List is note created\n";
+            return;
+        }
 
         while (1)
         {
@@ -126,6 +129,12 @@ struct list
     {
         node* headNode = head;
 
+        if (head == nullptr)
+        {
+            std::cout << "List is note created\n";
+            return;
+        }
+
         while (1)
         {
             node* nowNode = headNode;
@@ -165,6 +174,12 @@ struct list
     {
         node* p = head;
 
+        if (head == nullptr)
+        {
+            std::cout << "List is note created\n";
+            return;
+        }
+
         while (1)
         {
             if(_str == p->str)
@@ -176,35 +191,78 @@ struct list
                 p = p->next;
         }
     }
+
 };
+
+std::string enterData(std::string text)
+{
+    std::string data;
+    std::cout << text;
+    std::cin >> data;
+    return data;
+}
+
+void menu(list list)
+{
+    int number;
+    std::string data,bettenData;
+    
+
+    system("cls");
+
+    std::cout << "Choose a number:\n";
+    std::cout << "1 - enter a node to end of list or create list\n";
+    std::cout << "2 - enter a node to between node\n";
+    std::cout << "3 - delte a node\n";
+    std::cout << "4 - check a node\n";
+    std::cout << "5 - check all node\n";
+    std::cout << "6 - delete all node\n";
+    std::cout << "7 - exit\n";
+
+    std::cin >> number;
+
+
+
+    switch (number)
+    {
+        case 1:
+            list.enterNode(enterData("Write a date for node\n"));
+            break;
+
+        case 2:
+            list.addNode(enterData("Write a date for node\n"), enterData("Write the node before create a node\n"));
+            break;
+
+        case 3:
+            list.deleteNode(enterData("Write a node for delete\n"));
+            break;
+
+        case 4:
+            list.checkNode(enterData("Write node for check\n"));
+            break;
+
+        case 5:
+            list.printList();
+            break;
+
+        case 6:
+            list.deleteList();
+            break;
+
+        case 7:
+            return;
+            break;
+    }
+
+    system("Pause");
+    menu(list);
+
+}
+
 
 int main()
 {
     list list;
-    list.enterNode("1");
-    list.enterNode("2");
-    list.enterNode("3");
-    list.enterNode("4");
-    list.enterNode("5");
-    list.enterNode("6");
-    list.enterNode("7");
-    list.enterNode("8");
-    list.enterNode("9");
-
-    list.printList();
-
-    list.addNode("123", "1");
-
-    //system("Pause");
-    //system("cls");
-
-    //list.printList();
-
-    //system("Pause");
-    //system("cls");
-
-    list.deleteNode("11");
-    system("Pause");
-
-    list.printList();
+    menu(list);
+ 
 }
