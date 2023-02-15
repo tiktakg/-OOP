@@ -10,6 +10,7 @@ struct node
     node(std::string _str) 
     {
         str = _str;  
+        next = nullptr;
     }
 };
 
@@ -17,7 +18,7 @@ struct list
 {
     node* head = nullptr;
     node* first;
-    node* last;
+
    
     void enterNode(std::string _str)
     {
@@ -27,12 +28,10 @@ struct list
         {
             head = _node;
             first = _node;
-            last = _node;
             return;
         } 
 
         first->next = _node;
-        last = _node;
         first = _node;
  
     }
@@ -67,7 +66,7 @@ struct list
                 break;
             }
 
-            if (nowNode == last)
+            if (nowNode == nullptr)
             {
                 std::cout << "Check node is empty" << std::endl;
                 break;
@@ -108,14 +107,14 @@ struct list
                 firstNode->next = lastNode;
                 break;
             }
-            else if (_str == lastNode->str and lastNode == last)
+            else if (_str == lastNode->str and lastNode->next == nullptr)
             {
-                last = nowNode;
+                
                 delete(lastNode);
                 break;
             }
 
-            if (lastNode == last)
+            if (lastNode->next == nullptr)
             {
                 std::cout << "Delete node is empty" << std::endl;
                 break;
@@ -141,7 +140,7 @@ struct list
             headNode = headNode->next;
             delete(nowNode);
             
-            if (headNode == last)
+            if (headNode == nullptr)
             {
                 head = nullptr;
                 break;
@@ -163,7 +162,7 @@ struct list
         { 
             std::cout <<_node->str << std::endl;
           
-            if (_node == last)
+            if (_node->next == nullptr)
                 break;
             else
                 _node = _node->next;
@@ -185,7 +184,7 @@ struct list
             if(_str == p->str)
                 std::cout << p->str << std::endl;
 
-            if (p == last)
+            if (p->next == nullptr)
                 break;
             else
                 p = p->next;
@@ -213,7 +212,7 @@ void menu(list list)
     std::cout << "Choose a number:\n";
     std::cout << "1 - enter a node to end of list or create list\n";
     std::cout << "2 - enter a node to between node\n";
-    std::cout << "3 - delte a node\n";
+    std::cout << "3 - delete a node\n";
     std::cout << "4 - check a node\n";
     std::cout << "5 - check all node\n";
     std::cout << "6 - delete all node\n";
