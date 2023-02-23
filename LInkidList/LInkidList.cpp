@@ -47,27 +47,22 @@ struct list
 			std::cout << "List is note created\n";
 			return;
 		}
+		else if (checkstr == firstNode->str)
+		{
+			head = newNode;
+			newNode->next = firstNode;
+			return;
+		}
 
-		while (1)
+
+		while (firstNode->next != nullptr)
 		{
 			nowNode = firstNode->next;
 
-			if (checkstr == firstNode->str)
-			{
-				head = newNode;
-				newNode->next = firstNode;
-				break;
-			}
-			else if (checkstr == nowNode->str)
+			if(checkstr == nowNode->str)
 			{
 				firstNode->next = newNode;
 				newNode->next = nowNode;
-				break;
-			}
-
-			if (nowNode == nullptr)
-			{
-				std::cout << "Check node is empty" << std::endl;
 				break;
 			}
 
@@ -86,21 +81,20 @@ struct list
 			std::cout << "List is note created\n";
 			return;
 		}
+		else if (_str == firstNode->str)
+		{
+			nowNode = firstNode->next;
+			head = nowNode;
+			delete(firstNode);
+			return;
+		}
 
-		while (1)
+		while (firstNode != nullptr)
 		{
 			nowNode = firstNode->next;
 			lastNode = nowNode->next;
 
-			if (_str == firstNode->str)
-			{
-				nowNode = firstNode->next;
-				head = nowNode;
-				delete(firstNode);
-
-				break;
-			}
-			else if (_str == nowNode->str)
+			if (_str == nowNode->str)
 			{
 				delete(nowNode);
 				firstNode->next = lastNode;
@@ -108,19 +102,17 @@ struct list
 			}
 			else if (_str == lastNode->str and lastNode->next == nullptr)
 			{
-
+				nowNode->next = nullptr;
 				delete(lastNode);
 				break;
 			}
 
-			if (lastNode->next == nullptr)
-			{
-				std::cout << "Delete node is empty" << std::endl;
-				break;
-			}
 
 			firstNode = firstNode->next;
 		}
+
+
+
 	}
 
 	void deleteList()
@@ -142,7 +134,8 @@ struct list
 		head = nullptr;
 	}
 
-	void printList() {
+	void printList()
+	{
 
 		node* _node = head;
 
@@ -152,17 +145,18 @@ struct list
 			return;
 		}
 
-		while (_node != nullptr);
+		while (_node != nullptr)
 		{
 			std::cout << _node->str << std::endl;
 
 			_node = _node->next;
-		} 
+		}
 	}
+
 
 	void checkNode(std::string _str)
 	{
-		node* p = head;
+		node* node = head;
 
 		if (head == nullptr)
 		{
@@ -170,14 +164,15 @@ struct list
 			return;
 		}
 
-		while (p != nullptr)
+		while (node != nullptr)
 		{
-			if (_str == p->str)
-				std::cout << p->str << std::endl;
+			if (_str == node->str)
+				std::cout << node->str << std::endl;
 
-			p = p->next;
+			node = node->next;
 		}
 	}
+
 
 };
 
@@ -250,6 +245,9 @@ void menu(list list)
 int main()
 {
 	list list;
+	list.enterNode("1");
+	list.enterNode("2");
+	list.enterNode("3");
 	menu(list);
 
 }
