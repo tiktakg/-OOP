@@ -10,7 +10,7 @@ private:
 	char cc;
 
 	class Point;
-	friend void gotoxy(Triandgle*, Point*);
+	
 
 	
 
@@ -30,7 +30,7 @@ public:
 		std::cout << cc;
 	}
 
-	
+	friend void gotoxy(Triandgle*);
 	
 };
 
@@ -39,10 +39,9 @@ public:
 //	p->cc = c;
 //}
 
-void gotoxy(Triandgle* t, Point p)
+void gotoxy(Triandgle* t)
 {
 	HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord = { p->x,p->y };
 	COORD coord = { t->x,t->y };
 	SetConsoleCursorPosition(stdOut, coord);
 }
@@ -54,10 +53,10 @@ private:
 	
 	char cc;
 
-	class Triandgle;
+	friend void gotoxy(Point*);
+
 	//friend void friendPutChar(Triandgle*, char);
 
-	friend void gotoxy(Point*,Triandgle*);
 
 	//void gotoxy(int x, int y)
 	//{
@@ -81,6 +80,7 @@ public:
 		std::cout << cc;
 	}
 		
+	friend void Triandgle::gotoxy(Point&);
 
 };
 
@@ -90,7 +90,7 @@ int main()
 	Point p;
 	t.charlocus(3, 5, 'd');
 	p.charlocus(5, 3, 'g');
-	gotoxy(&t);\
+	gotoxy(&t);
 	gotoxy(&p);
 	t.display();
 	p.display();
