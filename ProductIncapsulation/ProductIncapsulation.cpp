@@ -13,7 +13,13 @@ private:
 	std::string name;
 
 public:
-	Product(std::string _name, float _price)
+	Product(std::string _name = "", float _price = 0)
+	{
+		name = _name;
+		price = _price + margin;
+	}
+
+	void WriteDataProduct(std::string _name, float _price)
 	{
 		name = _name;
 		price = _price + margin;
@@ -29,20 +35,20 @@ public:
 		std::cout << "price of porduct : " << price << std::endl;
 
 	}
-
-
-
 };
 
-  
+
 float Product::margin = 10;
 
 int main()
 {
 
 
-	Product product1("Potato", 10);
-	Product product2("Tomato", 15);
+	Product product1;
+	Product product2;
+
+	product1.WriteDataProduct("Potato", 10);
+	product2.WriteDataProduct("Tomato", 15);
 
 	product1.ShowDate();
 	product2.ShowDate();
