@@ -2,20 +2,22 @@
 #include <string>
 #include <windows.h>
 
-struct node
-{
-	std::string str;
-	node* next;
-
-	node(std::string _str)
-	{
-		str = _str;
-		next = nullptr;
-	}
-};
 
 struct list
 {
+
+	struct node
+	{
+		std::string str;
+		node* next;
+
+		node(std::string _str)
+		{
+			str = _str;
+			next = nullptr;
+		}
+	};
+
 	node* head = nullptr;
 	node* first;
 
