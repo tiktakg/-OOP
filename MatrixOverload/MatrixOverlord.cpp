@@ -96,6 +96,19 @@ Matrix& operator + (Matrix& MatrixA, Matrix& MatrixB)
 	
 }
 
+
+Matrix& operator * (Matrix& MatrixA, Matrix& MatrixB)
+{
+
+
+	
+		return MatrixA;
+
+
+
+}
+
+
 void main()
 {
 	

@@ -21,7 +21,7 @@ private:
 		std::string str;
 		Node* next;
 
-		Node(std::string _str):next(nullptr)
+		Node(std::string _str) :next(nullptr)
 		{
 			str = _str;
 		}
@@ -37,21 +37,21 @@ private:
 			node->next = lastNode;
 
 		lastNode = node;
-		
+
 	}
 
-	
+
 	void deleteLastNode()
 	{
 		if (lastNode != nullptr)
 		{
-			Node*  _node = lastNode->next;
+			Node* _node = lastNode->next;
 			delete(lastNode);
 			lastNode = _node;
 		}
 		else
 			std::cout << "List is note created\n";
-	
+
 	}
 
 	void printAndDeleteAllList()
@@ -70,12 +70,12 @@ private:
 
 	void PrintLastNode()
 	{
-		
+
 		if (lastNode != nullptr)
 			std::cout << lastNode->str << std::endl;
 		else
 			std::cout << "List is note created\n";
-		
+
 	}
 
 public:
@@ -124,7 +124,6 @@ public:
 	}
 };
 
-
 struct Queue
 {
 private:
@@ -162,7 +161,7 @@ private:
 
 		lastNode->next = node;
 		lastNode = node;
-		
+
 	}
 
 
@@ -257,25 +256,32 @@ private:
 	struct Node
 	{
 		std::string str;
+		Node* last;
 		Node* next;
 
-		Node(std::string _str) :next(nullptr)
+		Node(std::string _str) :next(nullptr), last(nullptr)
 		{
 			str = _str;
 		}
 	};
 
+public:
+
 	Node* firstNode = nullptr;
 	Node* lastNode = nullptr;
-
+	Node* lastNodeS = nullptr;
 	void enterNode(std::string _str)
 	{
 		Node* node = new Node(_str);
 
+		if (lastNodeS != nullptr)
+			node->last = lastNodeS;
+
+		lastNodeS = node;
+
 		if (firstNode == nullptr)
 		{
 			firstNode = node;
-			lastNode = node;
 			return;
 		}
 
@@ -286,7 +292,6 @@ private:
 			return;
 		}
 
-		node->next = lastNode;
 		lastNode->next = node;
 		lastNode = node;
 
@@ -296,13 +301,47 @@ private:
 	}
 
 
+
 	void DeleteFirstNode()
 	{
-		if (firstNode != nullptr)
+		if (firstNode != nullptr and lastNodeS != nullptr)
 		{
 			Node* node = firstNode->next;
-			delete(firstNode);
-			firstNode = node;
+
+			if (firstNode == lastNodeS)
+			{
+
+				delete(firstNode);
+				firstNode = nullptr;
+				return;
+			}
+			else
+			{
+				delete(firstNode);
+				firstNode = node;
+			}
+
+		}
+		else
+			std::cout << "List is note created\n";
+
+	}
+	void DeleteLastNode()
+	{
+		if (lastNodeS != nullptr and firstNode != nullptr)
+		{
+			Node* _node = lastNodeS->last;
+
+			if (firstNode == lastNodeS)
+			{
+				delete(lastNodeS);
+				lastNodeS = nullptr;
+				return;
+			}
+
+			delete(lastNodeS);
+			lastNodeS = _node;
+
 		}
 		else
 			std::cout << "List is note created\n";
@@ -312,30 +351,19 @@ private:
 	void PrintFirstNode()
 	{
 
-		if (firstNode != nullptr)
+		if (firstNode != nullptr and lastNodeS != nullptr)
 			std::cout << firstNode->str << std::endl;
 		else
 			std::cout << "List is note created\n";
 	}
 
-	void DeleteLastNode()
-	{
-		if (lastNode != nullptr)
-		{
-			Node* _node = lastNode->next;
-			delete(lastNode);
-			lastNode = _node;
-		}
-		else
-			std::cout << "List is note created\n";
 
-	}
 
 	void PrintLastNode()
 	{
 
-		if (lastNode != nullptr)
-			std::cout << lastNode->str << std::endl;
+		if (lastNodeS != nullptr and firstNode != nullptr)
+			std::cout << lastNodeS->str << std::endl;
 		else
 			std::cout << "List is note created\n";
 
@@ -343,35 +371,10 @@ private:
 
 
 
-	void printAndDeleteAllList()
-	{
-
-		if (firstNode == nullptr)
-		{
-			std::cout << "List is note created\n";
-			return;
-		}
-
-		while (lastNode != firstNode)
-		{
-			Node* _node = firstNode->next;
-			std::cout << firstNode->str << std::endl;
-			delete(firstNode);
-			firstNode = _node;
-		}
-
-		if (lastNode != nullptr)
-		{
-			std::cout << firstNode->str << std::endl;
-			delete(firstNode);
-		}
-		firstNode = nullptr;
-		lastNode = nullptr;
-
-	}
 
 
-public:
+
+
 	void menu(Deck list)
 	{
 		int number;
@@ -384,8 +387,7 @@ public:
 		std::cout << "3 - Delete first node\n";
 		std::cout << "4 - Print last node \n";
 		std::cout << "5 - Delete last node\n";
-		std::cout << "6 - Print and delete all node with start  \n";
-		std::cout << "7 - exit\n";
+		std::cout << "6 - exit\n";
 
 		std::cin >> number;
 
@@ -414,10 +416,6 @@ public:
 			break;
 
 		case 6:
-			list.printAndDeleteAllList();
-			break;
-
-		case 7:
 			return;
 			break;
 		}
@@ -433,7 +431,13 @@ public:
 
 int main()
 {
-	Queue qu;
+	Deck qu;
+	qu.enterNode("1");
+	qu.enterNode("2");
+	qu.enterNode("3");
+	qu.enterNode("4");
+	qu.enterNode("5");
+
 	qu.menu(qu);
 
 }
