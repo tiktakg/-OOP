@@ -295,9 +295,6 @@ public:
 		lastNode->next = node;
 		lastNode = node;
 
-
-
-
 	}
 
 
@@ -310,16 +307,14 @@ public:
 
 			if (firstNode == lastNodeS)
 			{
-
 				delete(firstNode);
 				firstNode = nullptr;
 				return;
 			}
-			else
-			{
-				delete(firstNode);
-				firstNode = node;
-			}
+
+			delete(firstNode);
+			firstNode = node;
+
 
 		}
 		else
