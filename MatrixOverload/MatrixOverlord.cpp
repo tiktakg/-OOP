@@ -20,7 +20,6 @@ public:
 	int lengthM;
 	int** matrix;
 
-
 	Matrix(int LengthN, int LengthM,int userInput)
 	{
 		lengthN = LengthN;
@@ -52,23 +51,23 @@ public:
 
 
 	}
+
 	~Matrix()
 	{
-		for (int i = 0; i < lengthM; i++)
+		for (int i = 0; i < lengthN; i++)
 			delete[] matrix[i];
 
 		delete[] matrix;
 
 		std::cout << "The matrix is deleted\n";
 	}
-	
 
 	void DisplayMatrix()
 	{
 		for (int i = 0; i < lengthN; ++i)
 		{
 			for (int j = 0; j < lengthM; ++j)
-				std::cout << matrix[i][j] << " ";
+					std::cout << matrix[i][j] << " ";
 
 			std::cout  << std::endl;
 		}
@@ -76,34 +75,86 @@ public:
 
 };
 
-
-
 Matrix& operator + (Matrix& MatrixA, Matrix& MatrixB)
 {
-	
-
 	if (MatrixA.lengthN == MatrixB.lengthN and MatrixA.lengthM == MatrixB.lengthM)
 	{
 		for (int i = 0; i < MatrixA.lengthN; ++i)
 			for (int j = 0; j < MatrixA.lengthM; ++j)
 				MatrixA.matrix[i][j] += MatrixB.matrix[i][j];
-
-		return MatrixA;
 	}
 	else
 		std::cout << "MatixA != MatrixB \n";
-	 
-	
-}
 
+	return MatrixA;
+	 
+}
 
 Matrix& operator * (Matrix& MatrixA, Matrix& MatrixB)
 {
+	Matrix m(MatrixA.lengthN, MatrixB.lengthM ,3);
+
+	if (MatrixA.lengthN == MatrixB.lengthM)
+	{
+		int number =0;
+		int number2 = 0;
+		int d = 0;
+		int k = 0;
+		for (int i = 0; i <= MatrixA.lengthN; ++i)
+		{
+			// std::cout << "|||||||||||||||\n";
+			 
+			/*m.DisplayMatrix();
+			system("Pause");
+			system("cls");*/
+
+			if (d == MatrixB.lengthM and i == MatrixA.lengthN)
+			{	
+				return m;	
+			}
+
+			d = 0;
+			for (int j = 0; j <= MatrixB.lengthM; ++j)
+			{
+				number += MatrixA.matrix[i][j] * MatrixB.matrix[j][0];
+				//std::cout << MatrixA.matrix[i][j] << " * " << MatrixB.matrix[j][0] << "\n";
+				
+			}
+
+			//std::cout << number << "\n";
+			m.matrix[i][d] = number;
+			d++;
+			number = 0;
+			
+			k++;
 
 
-	
-		return MatrixA;
+			for (int j = 0; j <= MatrixB.lengthM; ++j)
+			{
+				number += MatrixA.matrix[i][j] * MatrixB.matrix[j][k];
+				//std::cout << MatrixA.matrix[i][j] << " * " << MatrixB.matrix[j][k] << "\n";
 
+			}
+
+			//std::cout << number << "\n";
+			//std::cout << i << " " << d << "\n";
+			m.matrix[i][d] = number;
+			d++;
+			number = 0;
+			system("Pause");
+			system("cls");
+			
+			k = 0;
+			
+			
+			//std::cout << "|||||||||||||||\n";
+			//m.DisplayMatrix();
+
+			
+		}
+	}
+	else
+		std::cout << "MatixA string lenght != MatrixB column lenght \n";
 
 
 }
@@ -113,15 +164,19 @@ void main()
 {
 	
 	Matrix A(3, 3, 2);
-	Matrix B(3, 3, 2);
+	Matrix B(3, 2, 2);
+	std::cout << "|||||||||||||||\n";
 	A.DisplayMatrix();
 
 	std::cout << "|||||||||||||||\n";
 	B.DisplayMatrix();
+	std::cout << "|||||||||||||||\n";
+
+
 
 	
-	A = A + B;
-	std::cout << "|||||||||||||||\n";
+	A = A * B;
+	std::cout << "||||||||adsad|||||||\n";
 	A.DisplayMatrix();
 
 
