@@ -18,12 +18,14 @@ class Matrix
 public:
 	int lengthN;
 	int lengthM;
+
 	int** matrix;
 
 	Matrix(int LengthN, int LengthM,int userInput)
 	{
 		lengthN = LengthN;
 		lengthM = LengthM;
+		
 
 		matrix = new int* [LengthN];
 		
@@ -48,13 +50,25 @@ public:
 					 matrix[i][j] = firstNumber + rand() % secondNumber;
 		}
 		
+	}
 
+	void UpgradeMatrix(int OldLengthN,int LengthN, int LengthM)
+	{
+		for (int i = 0; i < OldLengthN; i++)
+			delete[] matrix[i];
 
+		delete[] matrix;
+
+		matrix = new int* [LengthN];
+
+		for (int i = 0; i < LengthN; ++i)
+		{
+			matrix[i] = new int[LengthM] {};
+		}
 	}
 
 	~Matrix()
 	{
-		std::cout << matrix[0][0]<< std::endl;
 		for (int i = 0; i < lengthN; i++)
 			delete[] matrix[i];
 
@@ -73,6 +87,11 @@ public:
 
 			std::cout << std::endl;
 		}
+	}
+
+	void DeterminantOfMatrix()
+	{
+
 	}
 
 };
@@ -99,31 +118,29 @@ Matrix& operator * (Matrix& MatrixA, Matrix& MatrixB)
 
 	if (MatrixA.lengthN == MatrixB.lengthM)
 	{
-		int number = 0;
-
 		for (int i = 0; i < MatrixA.lengthN; ++i)
 			for (int d = 0; d < MatrixB.lengthM; d++)
-			{
 				for (int j = 0; j < MatrixA.lengthM; j++)
-					number += MatrixA.matrix[i][j] * MatrixB.matrix[j][d];
-
-				m.matrix[i][d] = number;
-
-				number = 0;
-			}
-
-
+					m.matrix[i][d] += MatrixA.matrix[i][j] * MatrixB.matrix[j][d];
 	}
 	else
 		std::cout << "MatixA string lenght != MatrixB column lenght \n";
 
+	
+	
 
-	MatrixA.lengthN = m.lengthN;
+
+	MatrixA.UpgradeMatrix(MatrixA.lengthN,m.lengthN, m.lengthM);
+	
 	MatrixA.lengthM = m.lengthM;
+	MatrixA.lengthN = m.lengthN;
 
-	for (int i = 0; i < m.lengthN; ++i)
+	for (int i = 0; i < m.lengthN ; ++i)
 		for (int j = 0; j < m.lengthM; ++j)
 			MatrixA.matrix[i][j] = m.matrix[i][j];
+
+	
+
 
 	return MatrixA;
 }
@@ -135,16 +152,10 @@ void main()
 {
 	//std::srand(std::time(nullptr));
 
-	//Matrix A(2, 3, 2);
-	//Matrix B(3, 2, 2);
-	//Matrix A(3, 2, 2);
-	//Matrix B(2, 3, 2);
-
-	Matrix A(3, 3, 2);
-	Matrix B(3, 3, 2);
+	Matrix A(3, 2, 2);
+	Matrix B(2, 3, 2);
 	std::cout << "|||||||||||||||\n";
 	A.DisplayMatrix();
-
 	std::cout << "|||||||||||||||\n";
 	B.DisplayMatrix();
 	
