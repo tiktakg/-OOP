@@ -4,63 +4,21 @@
 #include <conio.h>
 
 
-void gotoxy(Triandgle t, Point p)
-{
-	HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord = { t.x,t.y };
-	SetConsoleCursorPosition(stdOut, coord);
-
-	HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord = { p.x,p.y };
-	SetConsoleCursorPosition(stdOut, coord);
-}
-
-//class Triandgle
-//{
-//private:
-//	
-//	char cc;
-//	
-//	friend void gotoxy(Triandgle t, Point p);
-//
-//public:
-//	short x, y, x1, y1, x2, y2;
-//
-//
-//	void charlocus(short X, short Y, short X1, short Y1, short X2, short Y2, char CC)
-//	{
-//		x = X;
-//		y = Y;
-//		x1 = X1;
-//		y1 = Y1;
-//		x2 = X2;
-//		y2 = Y2;
-//		cc = CC;
-//	}
-//
-//	void display(Triandgle t)
-//	{
-//		gotoxy(t, this);
-//		std::cout << cc;
-//		gotoxy(t, this);
-//		std::cout << cc;
-//		gotoxy(t, this);
-//		std::cout << cc;
-//	}
-//
-//};
+class Point;
+class Triandgle;
 
 class Point
 {
 private:
-	
 
-	friend void gotoxy( Point p);
 	char cc;
+	short x, y;
+public:
 	
 
-public:
-	short x, y;
+
+	friend void gotoxy(Triandgle& t, Point& p);
+
 
 	void charlocus(short X, short Y, char CC)
 	{
@@ -69,39 +27,88 @@ public:
 		cc = CC;
 	}
 
-	void display( Point p)
+	void display(Triandgle& t, Point& p)
 	{
 		gotoxy(t, p);
 		std::cout << cc;
 	}
 };
 
-
-void gotoxy(Triandgle t, Point p)
+class Triandgle
 {
-	HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord = { t.x,t.y };
-	SetConsoleCursorPosition(stdOut, coord);
+private:
+
+	char cc;
+	short x, y, x1, y1, x2, y2;
+	
+public:
+	
+
+	friend void gotoxy(Triandgle& t, Point& p);
+
+	void charlocus(short X, short Y, short X1, short Y1, short X2, short Y2, char CC)
+	{
+		x = X;
+		y = Y;
+		x1 = X1;
+		y1 = Y1;
+		x2 = X2;
+		y2 = Y2;
+		cc = CC;
+	}
+
+	void display(Triandgle t, Point p)
+	{
+		gotoxy(t,p);
+		gotoxy(t, p);
+		gotoxy(t, p);
+	}
+
+};
+
+
+
+
+
+void gotoxy(Triandgle& t,Point& p)
+{
 
 	HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coord = { p.x,p.y };
 	SetConsoleCursorPosition(stdOut, coord);
+;
+	coord = { t.x,t.y };
+	SetConsoleCursorPosition(stdOut, coord);
+	std::cout << t.cc;
+	coord = { t.x1,t.y1 };
+
+	SetConsoleCursorPosition(stdOut, coord);
+	std::cout << t.cc;
+	coord = { t.x2,t.y2 };
+	SetConsoleCursorPosition(stdOut, coord);
+	std::cout << t.cc;
+
+
 }
+
+
 
 int main()
 {
+	
+	
 	Point p;
 	Triandgle t;
 
-	p.charlocus(1, 1, 'q');
-	p.display(t,p);
+	
 
 	p.charlocus(5, 10, 'e');
-	p.display(t, p);
+	p.display(t,p);
 
 	t.charlocus(1, 4, 6, 7, 8, 2, 'f');
-	t.display();
+	t.display(t,p);
 	system("pause");
 }
+
 
 
