@@ -60,8 +60,6 @@ public:
 	void display(Triandgle t, Point p)
 	{
 		gotoxy(t,p);
-		gotoxy(t, p);
-		gotoxy(t, p);
 	}
 
 };
