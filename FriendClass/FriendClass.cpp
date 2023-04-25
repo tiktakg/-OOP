@@ -5,7 +5,7 @@
 
 
 class Point;
-class Triandgle;
+class Square;
 
 class Point
 {
@@ -17,7 +17,7 @@ public:
 	
 
 
-	friend void gotoxy(Triandgle& t, Point& p);
+	friend void gotoxy(Square& t, Point& p);
 
 
 	void charlocus(short X, short Y, char CC)
@@ -27,14 +27,14 @@ public:
 		cc = CC;
 	}
 
-	void display(Triandgle& t, Point& p)
+	void display(Square& t, Point& p)
 	{
 		gotoxy(t, p);
 		std::cout << cc;
 	}
 };
 
-class Triandgle
+class Square
 {
 private:
 
@@ -44,7 +44,7 @@ private:
 public:
 	
 
-	friend void gotoxy(Triandgle& t, Point& p);
+	friend void gotoxy(Square& t, Point& p);
 
 	void charlocus(short X, short Y, short X1, short Y1, short X2, short Y2, char CC)
 	{
@@ -57,7 +57,7 @@ public:
 		cc = CC;
 	}
 
-	void display(Triandgle t, Point p)
+	void display(Square t, Point p)
 	{
 		gotoxy(t,p);
 	}
@@ -68,7 +68,7 @@ public:
 
 
 
-void gotoxy(Triandgle& t,Point& p)
+void gotoxy(Square& t,Point& p)
 {
 
 	HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -96,7 +96,7 @@ int main()
 	
 	
 	Point p;
-	Triandgle t;
+	Square t;
 
 	
 
