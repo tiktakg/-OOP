@@ -54,9 +54,7 @@ public:
 		matrix = new int* [LengthN];
 
 		for (int i = 0; i < LengthN; ++i)
-		{
 			matrix[i] = new int[LengthM] {};
-		}
 
 		if (userInput == 1)
 		{
@@ -83,17 +81,10 @@ public:
 
 	void UpgradeMatrix(int OldLengthN, int LengthN, int LengthM)
 	{
-		//for (int i = 0; i < OldLengthN; ++i)
-		//	delete[] matrix[i];
-
-		//delete[] matrix;
-
 		matrix = new int* [LengthN];
 
 		for (int i = 0; i < LengthN; ++i)
-		{
 			matrix[i] = new int[LengthM] {};
-		}
 	}
 
 	~Matrix()
@@ -104,7 +95,6 @@ public:
 
 		delete[] matrix;
 
-		std::cout << "The matrix is deleted\n";
 	}
 
 	void DisplayMatrix()
@@ -117,6 +107,60 @@ public:
 			std::cout << std::endl;
 		}
 	}
+	 
+	int  determinantOfMatrix()
+	{
+		int det = 0;
+		if (lengthN != lengthM) 
+		{
+			std::cout << "The matrix is deleted\n";
+		}
+		else if (lengthN == 1)
+			det = matrix[0][0];
+		else if (lengthN == 2)
+			det = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+		else
+		{
+			for (int i = 0; i < lengthN; i++) {
+				Matrix submatrix(3,lengthN - 1, lengthN - 1);
+				for (int j = 1; j < lengthN; j++) {
+					for (int k = 0; k < lengthN; k++) {
+						if (k < i) 
+							submatrix.matrix[j - 1][k] = matrix[j][k];
+						else if (k > i) {
+							submatrix.matrix[j - 1][k - 1] = matrix[j][k];
+						}
+					}
+				}
+				det += pow(-1, i) * matrix[0][i] * submatrix.determinantOfMatrix();
+			}
+			return det;
+		}
+		
+	}
+	
+	
+
+	void TransporantOfMaterix()
+	{
+		Matrix m(3, lengthN, lengthM);
+
+		if(lengthN == lengthM)
+			for (int i = 0; i < lengthN; ++i)
+			{
+				for (int j = 0; j < lengthM; ++j)
+				{
+					m.matrix[i][j] = matrix[j][i];
+					std::cout << m.matrix[i][j] << " ";
+				}
+				std::cout << std::endl;
+			}
+		else
+			std::cout << "Matix lengthN != lengthM \n";
+	}
+
+		
+	
 
 };
 
@@ -124,16 +168,14 @@ Matrix& operator + (Matrix& MatrixA, Matrix& MatrixB)
 {
 
 	if (MatrixA.lengthN == MatrixB.lengthN and MatrixA.lengthM == MatrixB.lengthM)
-	{
 		for (int i = 0; i < MatrixA.lengthN; ++i)
 			for (int j = 0; j < MatrixA.lengthM; ++j)
 				MatrixA.matrix[i][j] += MatrixB.matrix[i][j];
-
-		return MatrixA;
-	}
-	else
+	else 
 		std::cout << "MatixA != MatrixB \n";
+		
 
+	return MatrixA;
 	
 
 }
@@ -175,23 +217,29 @@ int main()
 
 
 	Matrix A;
-	Matrix B;
+	//Matrix B;
 
 
 	std::cout << "|||||||||||||||\n";
 
 	A.DisplayMatrix();
 	std::cout << "|||||||||||||||\n";
-	B.DisplayMatrix();
+	//B.DisplayMatrix();
 
 
-	Matrix C = A + B;
+
+	//Matrix C = A + B;
+	//std::cout << "|||||||||||||||\n";
+	int t = A.determinantOfMatrix();
+	
+	std::cout << t << std::endl;
 	std::cout << "|||||||||||||||\n";
-	C.DisplayMatrix();
-	std::cout << "|||||||||||||||\n";
-	A = A * B;
-	std::cout << "|||||||||||||||\n";
-	A.DisplayMatrix();
-	std::cout << "|||||||||||||||\n";
+
+	//C.DisplayMatrix();
+	//std::cout << "|||||||||||||||\n";
+	//A = A * B;
+	//std::cout << "|||||||||||||||\n";
+	//A.DisplayMatrix();
+	//std::cout << "|||||||||||||||\n";
 
 }
