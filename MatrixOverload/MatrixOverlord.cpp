@@ -2,15 +2,50 @@
 #include <iostream>
 #include <string>
 
+#define checkSymbol (('0' <= text[i] && text[i] <= '9') > 0)
 
-int enterData(std::string text)
+
+
+int checkNumber(std::string repeat)
 {
-	int date;
+	int number1;
+	bool work = true;
+	bool work2 = true;
+	std::string text;
 
-	std::cout << text;
-	std::cin >> date;
+	while (work == true or work2 == true)
+	{
+		work = true;
+		work2 = true;
+		std::cout << repeat;
+		noskipws(getline(std::cin, text));
 
-	return date;
+		text.insert(text.size(), 2, ' ');
+
+		for (int i = 0; i < text.size(); i++)
+		{
+			for (int i = 0; i < text.size(); i++)
+			{
+				if (checkSymbol)
+					if (text[i + 1] == ' ')
+						if ('0' <= text[i + 2] && text[i + 2] <= '9') break;
+						else work2 = false;
+
+				if (text[i] == ' ')
+				{
+					text.erase(i, 1);
+					i--;
+				}
+			}
+			if (!checkSymbol) break;
+
+			if (i == text.size() - 1) work = false;
+
+		}
+		system("cls");
+		number1 = atof(text.c_str());
+	}
+	return number1;
 }
 
 class Matrix
@@ -27,14 +62,10 @@ public:
 		
 		if (userInput != 3)
 		{
-			std::cout << "Write a lenght N \n";
-			std::cin >> lengthN;
+			lengthN = checkNumber("Write a lenght N \n");
+			lengthM = checkNumber("Write a lenght M \n");
 
-			std::cout << "Write a lenght M \n";
-			std::cin >> lengthM;
-
-			std::cout << "Write a filling method \n1 - manual \n2 - automatic  \n";
-			std::cin >> userInput;
+			userInput = checkNumber("Write a filling method \n1 - manual \n2 - automatic  \n");
 
 			LengthN = lengthN;
 			LengthM = lengthM;
@@ -60,14 +91,14 @@ public:
 		{
 			for (int i = 0; i < LengthN; ++i)
 				for (int j = 0; j < LengthM; ++j)
-					matrix[i][j] = enterData("Write a number \n");
+					matrix[i][j] = checkNumber("Write a number \n");
 
 			system("cls");
 		}
 		else if (userInput == 2)
 		{
-			int firstNumber = enterData("Write a number for first range\n");
-			int secondNumber = enterData("Write a number for second range\n");
+			int firstNumber = checkNumber("Write a number for first range\n");
+			int secondNumber = checkNumber("Write a number for second range\n");
 
 			system("cls");
 
@@ -75,7 +106,6 @@ public:
 				for (int j = 0; j < LengthM; ++j)
 					matrix[i][j] = firstNumber + rand() % secondNumber;
 		}
-	
 
 	}
 
@@ -87,15 +117,15 @@ public:
 			matrix[i] = new int[LengthM] {};
 	}
 
-	~Matrix()
-	{
-		
-		for (int i = 0; i < lengthN; i++)
-				delete[] matrix[i];
+	//~Matrix()
+	//{
 
-		delete[] matrix;
+	//	for (int i = 0; i < lengthN; i++)
+	//			delete[] matrix[i];
 
-	}
+	//	delete[] matrix;
+
+	//}
 
 	void DisplayMatrix()
 	{
@@ -106,6 +136,8 @@ public:
 
 			std::cout << std::endl;
 		}
+		std::cout << std::endl;
+		
 	}
 	 
 	int  determinantOfMatrix()
@@ -138,7 +170,6 @@ public:
 		}
 		
 	}
-	
 	
 
 	void TransporantOfMaterix()
@@ -183,27 +214,29 @@ Matrix& operator + (Matrix& MatrixA, Matrix& MatrixB)
 
 Matrix& operator * (Matrix& MatrixA, Matrix& MatrixB)
 {
-	Matrix m(3, MatrixA.lengthN, MatrixB.lengthM);
+	//Matrix m(3, MatrixA.lengthN, MatrixB.lengthM);
 
 	if (MatrixA.lengthN == MatrixB.lengthM)
 	{
-		for (int i = 0; i < MatrixA.lengthN; ++i)
+		/*for (int i = 0; i < MatrixA.lengt1hN; ++i)
 			for (int d = 0; d < MatrixB.lengthM; d++)
 				for (int j = 0; j < MatrixA.lengthM; j++)
 					m.matrix[i][d] += MatrixA.matrix[i][j] * MatrixB.matrix[j][d];
+
+		MatrixA.UpgradeMatrix(MatrixA.lengthN, m.lengthN, m.lengthM);
+
+		MatrixA.lengthM = m.lengthM;
+		MatrixA.lengthN = m.lengthN;
+
+		for (int i = 0; i < m.lengthN; ++i)
+			for (int j = 0; j < m.lengthM; ++j)
+				MatrixA.matrix[i][j] = m.matrix[i][j];*/
 	}
 	else
 		std::cout << "MatixA string lenght != MatrixB column lenght \n";
 
 
-	MatrixA.UpgradeMatrix(MatrixA.lengthN, m.lengthN, m.lengthM);
-
-	MatrixA.lengthM = m.lengthM;
-	MatrixA.lengthN = m.lengthN;
-
-	for (int i = 0; i < m.lengthN; ++i)
-		for (int j = 0; j < m.lengthM; ++j)
-			MatrixA.matrix[i][j] = m.matrix[i][j];
+	
 
 	return MatrixA;
 }
@@ -217,29 +250,20 @@ int main()
 
 
 	Matrix A;
-	//Matrix B;
-
-
-	std::cout << "|||||||||||||||\n";
+	Matrix B;
 
 	A.DisplayMatrix();
-	std::cout << "|||||||||||||||\n";
-	//B.DisplayMatrix();
-
-
+	B.DisplayMatrix();
 
 	//Matrix C = A + B;
-	//std::cout << "|||||||||||||||\n";
-	int t = A.determinantOfMatrix();
-	
-	std::cout << t << std::endl;
-	std::cout << "|||||||||||||||\n";
+	std::cout << "A + B\n";
+	A.DisplayMatrix();
 
+	////C = A * B;
+	//std::cout << "A * B\n";
 	//C.DisplayMatrix();
-	//std::cout << "|||||||||||||||\n";
-	//A = A * B;
-	//std::cout << "|||||||||||||||\n";
-	//A.DisplayMatrix();
-	//std::cout << "|||||||||||||||\n";
+
+	//std::cout << A.determinantOfMatrix();
+	
 
 }
