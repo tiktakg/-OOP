@@ -55,11 +55,11 @@ public:
 	int lengthM;
 
 
-	int** matrix;
+	float ** matrix;
 
 	Matrix(int userInput = 1, int LengthN = 0, int LengthM = 0)
 	{
-		
+
 		if (userInput != 3)
 		{
 			lengthN = checkNumber("Write a lenght N \n");
@@ -80,18 +80,18 @@ public:
 			lengthM = LengthM;
 
 		}
-		
 
-		matrix = new int* [LengthN];
+
+		matrix = new float* [LengthN];
 
 		for (int i = 0; i < LengthN; ++i)
-			matrix[i] = new int[LengthM] {};
+			matrix[i] = new float[LengthM] {};
 
 		if (userInput == 1)
 		{
 			for (int i = 0; i < LengthN; ++i)
 				for (int j = 0; j < LengthM; ++j)
-					matrix[i][j] = checkNumber("Write a number \n");
+					std::cin >> matrix[i][j];
 
 			system("cls");
 		}
@@ -111,21 +111,11 @@ public:
 
 	void UpgradeMatrix(int OldLengthN, int LengthN, int LengthM)
 	{
-		matrix = new int* [LengthN];
+		matrix = new float* [LengthN];
 
 		for (int i = 0; i < LengthN; ++i)
-			matrix[i] = new int[LengthM] {};
+			matrix[i] = new float[LengthM] {};
 	}
-
-	//~Matrix()
-	//{
-
-	//	for (int i = 0; i < lengthN; i++)
-	//			delete[] matrix[i];
-
-	//	delete[] matrix;
-
-	//}
 
 	void DisplayMatrix()
 	{
@@ -137,15 +127,22 @@ public:
 			std::cout << std::endl;
 		}
 		std::cout << std::endl;
-		
+
 	}
-	 
-	int  determinantOfMatrix()
+
+	int determinantOfMatrix()
 	{
 		int det = 0;
-		if (lengthN != lengthM) 
+
+		if (lengthN == 0 and lengthM == 0)
 		{
-			std::cout << "The matrix is deleted\n";
+			
+			return -1;
+		}
+		else if (lengthN != lengthM)
+		{
+			
+			return -1;
 		}
 		else if (lengthN == 1)
 			det = matrix[0][0];
@@ -154,10 +151,10 @@ public:
 		else
 		{
 			for (int i = 0; i < lengthN; i++) {
-				Matrix submatrix(3,lengthN - 1, lengthN - 1);
+				Matrix submatrix(3, lengthN - 1, lengthN - 1);
 				for (int j = 1; j < lengthN; j++) {
 					for (int k = 0; k < lengthN; k++) {
-						if (k < i) 
+						if (k < i)
 							submatrix.matrix[j - 1][k] = matrix[j][k];
 						else if (k > i) {
 							submatrix.matrix[j - 1][k - 1] = matrix[j][k];
@@ -168,15 +165,23 @@ public:
 			}
 			return det;
 		}
-		
+
 	}
-	
+
+	std::string checkOfM()
+	{
+		if (determinantOfMatrix() == -1)
+			return "";
+
+		return std::to_string(determinantOfMatrix());
+	}
+
 
 	void TransporantOfMaterix()
 	{
 		Matrix m(3, lengthN, lengthM);
 
-		if(lengthN == lengthM)
+		if (lengthN == lengthM)
 			for (int i = 0; i < lengthN; ++i)
 			{
 				for (int j = 0; j < lengthM; ++j)
@@ -190,35 +195,29 @@ public:
 			std::cout << "Matix lengthN != lengthM \n";
 	}
 
-		
-	
-
 };
 
 Matrix& operator + (Matrix& MatrixA, Matrix& MatrixB)
 {
-
 	if (MatrixA.lengthN == MatrixB.lengthN and MatrixA.lengthM == MatrixB.lengthM)
 		for (int i = 0; i < MatrixA.lengthN; ++i)
 			for (int j = 0; j < MatrixA.lengthM; ++j)
 				MatrixA.matrix[i][j] += MatrixB.matrix[i][j];
-	else 
+	else
 		std::cout << "MatixA != MatrixB \n";
-		
+
 
 	return MatrixA;
-	
-
 }
 
 
 Matrix& operator * (Matrix& MatrixA, Matrix& MatrixB)
 {
-	//Matrix m(3, MatrixA.lengthN, MatrixB.lengthM);
+	Matrix m(3, MatrixA.lengthN, MatrixB.lengthM);
 
 	if (MatrixA.lengthN == MatrixB.lengthM)
 	{
-		/*for (int i = 0; i < MatrixA.lengt1hN; ++i)
+		for (int i = 0; i < MatrixA.lengthN; ++i)
 			for (int d = 0; d < MatrixB.lengthM; d++)
 				for (int j = 0; j < MatrixA.lengthM; j++)
 					m.matrix[i][d] += MatrixA.matrix[i][j] * MatrixB.matrix[j][d];
@@ -230,19 +229,16 @@ Matrix& operator * (Matrix& MatrixA, Matrix& MatrixB)
 
 		for (int i = 0; i < m.lengthN; ++i)
 			for (int j = 0; j < m.lengthM; ++j)
-				MatrixA.matrix[i][j] = m.matrix[i][j];*/
+				MatrixA.matrix[i][j] = m.matrix[i][j];
 	}
 	else
 		std::cout << "MatixA string lenght != MatrixB column lenght \n";
 
 
-	
+
 
 	return MatrixA;
 }
-
-
-
 
 int main()
 {
@@ -255,15 +251,16 @@ int main()
 	A.DisplayMatrix();
 	B.DisplayMatrix();
 
-	//Matrix C = A + B;
-	std::cout << "A + B\n";
+	std::cout << "Matrix a determinant " << A.checkOfM();
+
+	Matrix C = A + B;
+	std::cout << "\nA + B\n";
 	A.DisplayMatrix();
 
-	////C = A * B;
-	//std::cout << "A * B\n";
-	//C.DisplayMatrix();
+	C = C * B;
+	std::cout << "C * B\n";
+	C.DisplayMatrix();
 
-	//std::cout << A.determinantOfMatrix();
-	
+
 
 }
