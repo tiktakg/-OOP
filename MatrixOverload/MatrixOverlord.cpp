@@ -52,14 +52,30 @@ float takeNumber()
 {
 	float number;
 	std::string n = "";
+	bool validInput = false;
+
+	while (!validInput)
+	{
+		validInput = false;
+		std::cout << "Write a number \n";
+		std::getline(std::cin, n);
+
+		try
+		{
+			number = stof(n);
+			validInput = true;	
+		}
+		catch(std::invalid_argument&)
+		{
+		}
+		system("cls");
+		
+	}
 
 
-	std::cout << "Write a number \n";
-	std::cin >> n;
 
 
-
-	return  atof(n.c_str());
+	return  number;
 }
 
 class Matrix
@@ -109,8 +125,7 @@ public:
 
 					float number = takeNumber();
 					matrix[i][j] = number;
-					std::cout << number;
-
+					
 				}
 
 
@@ -156,12 +171,10 @@ public:
 
 		if (lengthN == 0 and lengthM == 0)
 		{
-
 			return -1;
 		}
 		else if (lengthN != lengthM)
 		{
-
 			return -1;
 		}
 		else if (lengthN == 1)
