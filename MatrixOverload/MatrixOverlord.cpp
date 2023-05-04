@@ -48,6 +48,20 @@ int checkNumber(std::string repeat)
 	return number1;
 }
 
+float takeNumber()
+{
+	float number;
+	std::string n = "";
+
+
+	std::cout << "Write a number \n";
+	std::cin >> n;
+
+
+
+	return  atof(n.c_str());
+}
+
 class Matrix
 {
 public:
@@ -55,7 +69,7 @@ public:
 	int lengthM;
 
 
-	float ** matrix;
+	float** matrix;
 
 	Matrix(int userInput = 1, int LengthN = 0, int LengthM = 0)
 	{
@@ -91,9 +105,15 @@ public:
 		{
 			for (int i = 0; i < LengthN; ++i)
 				for (int j = 0; j < LengthM; ++j)
-					std::cin >> matrix[i][j];
+				{
 
-			system("cls");
+					float number = takeNumber();
+					matrix[i][j] = number;
+					std::cout << number;
+
+				}
+
+
 		}
 		else if (userInput == 2)
 		{
@@ -136,12 +156,12 @@ public:
 
 		if (lengthN == 0 and lengthM == 0)
 		{
-			
+
 			return -1;
 		}
 		else if (lengthN != lengthM)
 		{
-			
+
 			return -1;
 		}
 		else if (lengthN == 1)
@@ -244,6 +264,13 @@ int main()
 {
 	std::srand(std::time(nullptr));
 
+
+
+	//while (1)
+	//{
+	//	float number = takeNumber();
+	//	std::cout << number;
+	//}
 
 	Matrix A;
 	Matrix B;
