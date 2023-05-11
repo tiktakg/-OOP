@@ -278,13 +278,6 @@ int main()
 	std::srand(std::time(nullptr));
 
 
-
-	//while (1)
-	//{
-	//	float number = takeNumber();
-	//	std::cout << number;
-	//}
-
 	Matrix A;
 	Matrix B;
 
