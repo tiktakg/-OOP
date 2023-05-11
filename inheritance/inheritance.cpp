@@ -4,8 +4,6 @@
 #include <conio.h>
 #include <string>
 
-
-
 class core
 {
 public:
@@ -72,8 +70,6 @@ public:
 		countGpuCore = GPU::countCore;
 		countCpuCore = CPU::countCore;
 		modelPc = GPU::modelGpu + " " + CPU::modelCpu;
-
-
 	}
 
 	void writeConfig()
@@ -86,8 +82,6 @@ public:
 	}
 };
 
-
-
 int main()
 {
 	Pc pc;
@@ -95,6 +89,3 @@ int main()
 	pc.makePc();
 	pc.writeConfig();
 }
-
-
-
