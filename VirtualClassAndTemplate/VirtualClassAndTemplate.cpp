@@ -3,8 +3,8 @@
 class Shape
 {
 public:
-    virtual int getSquare() = 0;     // площадь фигуры
-    virtual int getPerimeter() = 0;  // периметр фигуры
+    virtual int getSquare() = 0;     
+    virtual int getPerimeter() = 0;  
 
     int setNumber()
     {
@@ -43,14 +43,13 @@ template<typename T> T add(T a, T b)
 {
     return a + b;
 }
+
 int main()
 {
-  
     Square sq;
 
     std::cout << "Perimetr - " << sq.getPerimeter() << std::endl;
     std::cout << "Ploshagi - " << sq.getSquare() << std::endl << std::endl;
-
    
     std::cout << add(4,5) << std::endl;
     std::cout << add(std::string("sdf"), std::string("11ASd")) << std::endl;
