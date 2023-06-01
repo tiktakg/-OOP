@@ -40,10 +40,93 @@ int main()
 
 }
 
+#pragma region vector
+template <typename T>
+class customVector
+{
+public:
+	
+	class Node
+	{
+	public:
+		T element;
+		int i;
+
+		Node(T _element)
+		{
+			element = _element;
+			i = size + 1;
+		}
+
+	};
+	int size = 0;
+	Node* head = nullptr;
+
+	void pushBack(T element)
+	{
+		Node node = new Node(element);
+		if (head == nullptr)
+			head = node;
+
+	}
+
+	int Size()
+	{
+		return size;
+	}
+
+
+	T& operator[](int index) {
+		if (index < 0 || index >= size) {
+			throw std::out_of_range("Index out of range");
+		}
+
+		Node* current = head;
+		int currentIndex = 0;
+
+		while (currentIndex < index) {
+			current = current->next;
+			currentIndex++;
+		}
+
+		return current->element;
+	}
+
+class Iterator {
+	private:
+		Node* current;
+
+	public:
+		Iterator(Node* node) : current(node) {}
+
+		T& operator*() const {
+			return current->element;
+		}
+
+		Iterator& operator++() {
+			current = current->next;
+			return *this;
+		}
+
+		bool operator!=(const Iterator& other) const {
+			return current != other.current;
+		}
+	};
+
+	Iterator begin() {
+		return Iterator(head);
+	}
+
+	Iterator end() {
+		return Iterator(nullptr); // Итератор, указывающий на конец вектора
+	}
+
+
+};
 void showVector()
 {
 
-	std::vector <int> vector;
+	/*std::vector <int> vector;
 
 	showText("Work of vector", "");
 	showText(vector.size(), " - Size of empty vector");
@@ -62,10 +145,21 @@ void showVector()
 	showText("--------------", "\nElements of vector after push back");
 
 	for (const int i : vector)
-		showText(i, "");
+		showText(i, "");*/
+
+	customVector<int> customVector;
+
+	customVector[0] = 1;
+	showText(customVector.Size(), "");
+
+	for (const int i : customVector)
+		showText(i, " - Elements of empty vector");
 
 	pauseAndClear;
 }
+#pragma endregion
+
+#pragma region list
 
 void showList()
 {
@@ -98,11 +192,11 @@ void showList()
 
 	pauseAndClear;
 }
+#pragma endregion
+
+#pragma region set
 
 template <typename T>
-
-#pragma region Set
-
 class customSet
 {
 public:
@@ -216,18 +310,23 @@ void showSet()
 
 #pragma endregion
 
-
+#pragma region multiset
 
 void showMultiset()
 {
 	pauseAndClear;
 }
+#pragma endregion
 
+#pragma region map
 void showMap()
 {
 	pauseAndClear;
 
 }
+#pragma endregion
+
+#pragma region Stack
 
 void showStack()
 {
@@ -235,30 +334,40 @@ void showStack()
 
 }
 
+#pragma endregion
+
+#pragma region queue
+
 void showQueue()
 {
 	pauseAndClear;
 
 }
+#pragma endregion
+
+#pragma region priorityQueue
 
 void showPriorityQueue()
 {
 	pauseAndClear;
 
 }
+#pragma endregion
+
+#pragma region bitSet
 
 void showBitSet()
 {
 	pauseAndClear;
 
 }
+#pragma endregion
+
+#pragma region unorderedSet
 
 void showUnorderedSet()
 {
 	pauseAndClear;
 
 }
-
-
-
-
+#pragma endregion
