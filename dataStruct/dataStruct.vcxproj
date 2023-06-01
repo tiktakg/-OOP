@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1eff9006-cec8-4e2b-a625-afd8a6929db7}</ProjectGuid>
-    <RootNamespace>dataStructur</RootNamespace>
+    <ProjectGuid>{09c668df-dfa7-4461-bfb7-a55a51887b6e}</ProjectGuid>
+    <RootNamespace>dataStruct</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dataStructur.cpp" />
+    <ClCompile Include="dataStruct.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
