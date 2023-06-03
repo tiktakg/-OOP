@@ -45,46 +45,54 @@ template <typename T>
 class customVector
 {
 public:
+	class Iterator;
+	class Node;
+
+	int length = 0;
 	
-	class Node
+	Node* start = nullptr;
+	Node* last = nullptr;
+	
+	void pushBack(T element) 
 	{
-	public:
-		T element;
-		int i;
+		Node* node = new Node(element);
 
-		Node(T _element)
-		{
-			element = _element;
-			i = size + 1;
+		if (start == nullptr) {
+			start = node;
+			last = node;
 		}
-
-	};
-	int size = 0;
-	Node* head = nullptr;
-
-	void pushBack(T element)
-	{
-		Node node = new Node(element);
-		if (head == nullptr)
-			head = node;
-
+		else {
+			last->next = node;
+			last = node;
+		}
+		length++;
 	}
 
-	int Size()
+	int size()
 	{
-		return size;
+		return length;
+	}
+	
+	Iterator begin()
+	{
+		return Iterator(start);
 	}
 
+	Iterator end()
+	{
+		return Iterator(nullptr);
+	}
 
-	T& operator[](int index) {
-		if (index < 0 || index >= size) {
-			throw std::out_of_range("Index out of range");
-		}
+	T& operator[](int index) 
+	{
+		if (index < 0 || index >= length) 
+			throw std::out_of_range("Index out of range");	
 
-		Node* current = head;
+		Node* current = start;
 		int currentIndex = 0;
 
-		while (currentIndex < index) {
+		while (currentIndex < index) 
+		{
 			current = current->next;
 			currentIndex++;
 		}
@@ -92,71 +100,74 @@ public:
 		return current->element;
 	}
 
-class Iterator {
+	class Node
+	{
+	public:
+		Node* next;
+		T element;
+	
+	
+		Node(T _element) : next(nullptr)
+		{
+			element = _element;
+		}
+	};
+
+	class Iterator 
+	{
 	private:
 		Node* current;
 
 	public:
 		Iterator(Node* node) : current(node) {}
 
-		T& operator*() const {
+		T& operator*() const 
+		{
 			return current->element;
 		}
 
-		Iterator& operator++() {
+		Iterator& operator++() 
+		{
 			current = current->next;
 			return *this;
 		}
 
-		bool operator!=(const Iterator& other) const {
+		bool operator!=(const Iterator& other) const 
+		{
 			return current != other.current;
 		}
 	};
-
-	Iterator begin() {
-		return Iterator(head);
-	}
-
-	Iterator end() {
-		return Iterator(nullptr); // Итератор, указывающий на конец вектора
-	}
-
-
 };
+
 void showVector()
 {
-
-	/*std::vector <int> vector;
-
-	showText("Work of vector", "");
-	showText(vector.size(), " - Size of empty vector");
-
-	vector.resize(2);
-
-	showText(vector.size(), " - Size of empty with resize vector");
-
-	for (const int i : vector)
-		showText(i, " - Elements of empty vector");
-
-	vector.push_back(1);
-	vector.push_back(2);
-	vector.push_back(3);
-
-	showText("--------------", "\nElements of vector after push back");
-
-	for (const int i : vector)
-		showText(i, "");*/
-
 	customVector<int> customVector;
 
-	customVector[0] = 1;
-	showText(customVector.Size(), "");
+	customVector.pushBack(0);
+	customVector.pushBack(1);
+	customVector.pushBack(2);
+	
+
+
+	showText(customVector.size(), " - size of vector");
+
+	showText(customVector[0], " - first element of vector");
+	showText(customVector[1], " - second element of vector");
+	showText(customVector[2], " - third element of vector\n");
+	
+	showText("Elements of  vector use for ech", "");
 
 	for (const int i : customVector)
-		showText(i, " - Elements of empty vector");
+		showText(i, "");
+
+	showText("Elements of  vector use for ", "");
+
+	for (int i = 0; i < customVector.size(); ++i)
+		showText(customVector[i], "");
 
 	pauseAndClear;
 }
+
 #pragma endregion
 
 #pragma region list
@@ -210,7 +221,6 @@ public:
 		{
 			element = _element;
 		}
-
 	};
 
 	Node* start = nullptr;
@@ -263,14 +273,12 @@ public:
 			}
 			_last = _node;
 			_node = _node->next;
-
 		}
 	}
 
 	bool checkElement(T element)
 	{
 		Node* _node = start;
-
 
 		while (_node != nullptr)
 		{
