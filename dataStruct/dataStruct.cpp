@@ -25,9 +25,9 @@ void showUnorderedSet();
 
 int main()
 {
-	system("color 02");
+	system("color 0F");
 
-	showVector();
+	//showVector();
 	showList();
 	showSet();
 	showMultiset();
@@ -179,39 +179,132 @@ class customList
 	class Node;
 	class Iterator;
 
-	Node* head = nullptr;
-	Node* last = nullptr;
+	Node* headNode = nullptr;
+	Node* lastNode = nullptr;
+
 public:
 
 	
-	void pushBack(T element)
-	{
-
-	}
-
 	void pushFront(T element)
 	{
+		Node* newNode = new Node(element);
+
+		if (headNode == nullptr)
+		{
+			headNode = newNode;
+			lastNode = newNode;
+		}
+		else
+		{
+			lastNode->next = newNode;
+			newNode->last = lastNode;
+			lastNode = newNode;
+		}
+	}
+
+	void pushBack(T element)
+	{
+		Node* newNode = new Node(element);
+
+		if (headNode == nullptr)
+		{
+			headNode = newNode;
+			lastNode = newNode;
+		}
+		else
+		{
+			headNode->last = newNode;
+			newNode->next = headNode;
+			headNode = newNode;
+		}
 
 	}
 
+	void testShow()
+	{
+		Node* node = headNode;
+
+		if (node == nullptr)
+		{
+			std::cout << "NUll";
+		}
+		while (node != nullptr)
+		{
+			std::cout << "Work show \n";
+			std::cout << node->element << " ";
+			node = node->next;
+		}
+
+		
+	}
 	void popBack()
 	{
+		if (headNode != nullptr)
+		{
+			Node* nodeForDelete = headNode;
 
+			headNode = headNode->next;
+			headNode->last = nullptr;
+
+			delete nodeForDelete;
+		}
 	}
 
 	void popFront()
 	{
+		if (lastNode != nullptr)
+		{
+			Node* nodeForDelete = lastNode;
+
+			lastNode = lastNode->last;
+			lastNode->next = nullptr;
+
+			delete nodeForDelete;
+		}
+	}
+
+	void erase()
+	{
+
 
 	}
 
-	void remove()
+	void remove(T element)
 	{
+		Node* nodeForDelete = headNode;
+		Node* nodeBeforeNodeForDelete = nodeForDelete->next;
+		Node* nodeAfterNodeForDelete = nodeForDelete->next;
 
-	}
+		while (nodeForDelete->element != element)
+		{
+			nodeForDelete = nodeForDelete->next;
+			nodeAfterNodeForDelete = nodeForDelete->next;
+			nodeBeforeNodeForDelete = nodeForDelete->last;
+		}
 
-	void erase(T element)
-	{
 
+		if (nodeForDelete == headNode)
+		{
+			headNode = nodeAfterNodeForDelete;
+			headNode->next = nodeAfterNodeForDelete->next;
+
+		}
+		else if (nodeForDelete == lastNode)
+		{
+			lastNode = nodeBeforeNodeForDelete;
+			lastNode->last = nodeBeforeNodeForDelete->last;
+			lastNode->next = nullptr;
+		}
+		else
+		{
+			nodeBeforeNodeForDelete->next = nodeForDelete->next;
+			nodeAfterNodeForDelete->last = nodeForDelete->last;
+		}
+
+
+
+
+		delete nodeForDelete;
 	}
 
 	Iterator begin()
@@ -226,12 +319,13 @@ public:
 
 	class Node
 	{
+	public:
 		Node* last;
 		Node* next;
 
 		T element;
 
-		Node(T _element) :next(nullptr)
+		Node(T _element) :next(nullptr),last(nullptr)
 		{
 			element = _element;
 		}
@@ -250,10 +344,27 @@ void showList()
 	std::list <int> list;
 	
 	customList<int> customList;
-
 	
+	customList.pushBack(0);
+	customList.pushBack(-1);
+	customList.pushBack(-2);
 
-	showText("Work of list", "");
+	customList.pushFront(1);
+	customList.pushFront(2);
+	customList.pushFront(3);
+
+
+	showText("--------", "");
+	customList.testShow();
+	showText("--------", "");
+
+	customList.remove(3);
+	customList.testShow();
+
+	customList.pushFront(3);
+	customList.testShow();
+
+	/*showText("Work of list", "");
 	showText(list.size(), " - Size of list");
 
 	list.resize(2);
@@ -277,7 +388,7 @@ void showList()
 	showText("Elements of list after push front 2", "");
 
 	for (const int i : list)
-		showText(i, "");
+		showText(i, "");*/
 
 	pauseAndClear;
 }
