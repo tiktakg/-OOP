@@ -1,14 +1,14 @@
 ﻿#include <iostream>
-#include <vector>
 #include <Windows.h>
 #include <list> 
 #include <set>
-
 
 #define showText(text, text2) std::cout << text << " " << text2 << std::endl
 #define pauseAndClear { \
 system("pause"); \
 system("cls");};
+
+#pragma region allMethods
 
 void showVector();
 void showList();
@@ -21,7 +21,7 @@ void showPriorityQueue();
 void showBitSet();
 void showUnorderedSet();
 
-
+#pragma endregion
 
 int main()
 {
@@ -139,6 +139,7 @@ public:
 	};
 };
 
+
 void showVector()
 {
 	customVector<int> customVector;
@@ -172,14 +173,91 @@ void showVector()
 
 #pragma region list
 
+template <typename T>
+class customList
+{
+	class Node;
+	class Iterator;
+
+	Node* head = nullptr;
+	Node* last = nullptr;
+public:
+
+	
+	void pushBack(T element)
+	{
+
+	}
+
+	void pushFront(T element)
+	{
+
+	}
+
+	void popBack()
+	{
+
+	}
+
+	void popFront()
+	{
+
+	}
+
+	void remove()
+	{
+
+	}
+
+	void erase(T element)
+	{
+
+	}
+
+	Iterator begin()
+	{
+
+	}
+
+	Iterator end()
+	{
+		
+	}
+
+	class Node
+	{
+		Node* last;
+		Node* next;
+
+		T element;
+
+		Node(T _element) :next(nullptr)
+		{
+			element = _element;
+		}
+	};
+
+
+	class Iterator
+	{
+
+	};
+
+};
+
 void showList()
 {
 	std::list <int> list;
+	
+	customList<int> customList;
+
+	
 
 	showText("Work of list", "");
 	showText(list.size(), " - Size of list");
 
 	list.resize(2);
+
 
 	showText(list.size(), " - Size after resize list");
 	showText("--------------", "");
