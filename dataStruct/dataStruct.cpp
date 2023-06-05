@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <list> 
 #include <set>
+#include <list>
 
 #define showText(text, text2) std::cout << text << " " << text2 << std::endl
 #define pauseAndClear { \
@@ -49,11 +50,11 @@ public:
 	class Node;
 
 	int length = 0;
-	
+
 	Node* start = nullptr;
 	Node* last = nullptr;
-	
-	void pushBack(T element) 
+
+	void pushBack(T element)
 	{
 		Node* node = new Node(element);
 
@@ -72,7 +73,7 @@ public:
 	{
 		return length;
 	}
-	
+
 	Iterator begin()
 	{
 		return Iterator(start);
@@ -83,15 +84,15 @@ public:
 		return Iterator(nullptr);
 	}
 
-	T& operator[](int index) 
+	T& operator[](int index)
 	{
-		if (index < 0 || index >= length) 
-			throw std::out_of_range("Index out of range");	
+		if (index < 0 || index >= length)
+			throw std::out_of_range("Index out of range");
 
 		Node* current = start;
 		int currentIndex = 0;
 
-		while (currentIndex < index) 
+		while (currentIndex < index)
 		{
 			current = current->next;
 			currentIndex++;
@@ -105,15 +106,15 @@ public:
 	public:
 		Node* next;
 		T element;
-	
-	
+
+
 		Node(T _element) : next(nullptr)
 		{
 			element = _element;
 		}
 	};
 
-	class Iterator 
+	class Iterator
 	{
 	private:
 		Node* current;
@@ -121,18 +122,18 @@ public:
 	public:
 		Iterator(Node* node) : current(node) {}
 
-		T& operator*() const 
+		T& operator*() const
 		{
 			return current->element;
 		}
 
-		Iterator& operator++() 
+		Iterator& operator++()
 		{
 			current = current->next;
 			return *this;
 		}
 
-		bool operator!=(const Iterator& other) const 
+		bool operator!=(const Iterator& other) const
 		{
 			return current != other.current;
 		}
@@ -147,7 +148,7 @@ void showVector()
 	customVector.pushBack(0);
 	customVector.pushBack(1);
 	customVector.pushBack(2);
-	
+
 
 
 	showText(customVector.size(), " - size of vector");
@@ -155,7 +156,7 @@ void showVector()
 	showText(customVector[0], " - first element of vector");
 	showText(customVector[1], " - second element of vector");
 	showText(customVector[2], " - third element of vector\n");
-	
+
 	showText("Elements of  vector use for ech", "");
 
 	for (const int i : customVector)
@@ -177,14 +178,13 @@ template <typename T>
 class customList
 {
 	class Node;
-	class Iterator;
 
 	Node* headNode = nullptr;
 	Node* lastNode = nullptr;
 
 public:
+	class Iterator;
 
-	
 	void pushFront(T element)
 	{
 		Node* newNode = new Node(element);
@@ -220,23 +220,6 @@ public:
 
 	}
 
-	void testShow()
-	{
-		Node* node = headNode;
-
-		if (node == nullptr)
-		{
-			std::cout << "NUll";
-		}
-		while (node != nullptr)
-		{
-			std::cout << "Work show \n";
-			std::cout << node->element << " ";
-			node = node->next;
-		}
-
-		
-	}
 	void popBack()
 	{
 		if (headNode != nullptr)
@@ -263,14 +246,27 @@ public:
 		}
 	}
 
-	void erase()
+	void erase(Iterator& beginPositionIter)
 	{
+		std::cout << "o\n";
+		if(beginPositionIter == end())
+		for (Iterator iter = beginPositionIter; iter != end(); ++iter)
+		{
+			T element = *iter;
+			std::cout << element;
+		}
+	}
 
+	void erase(Iterator& beginPositionIter, Iterator endPositionIter)
+	{
 
 	}
 
 	void remove(T element)
 	{
+		if (headNode == nullptr)
+			return;
+
 		Node* nodeForDelete = headNode;
 		Node* nodeBeforeNodeForDelete = nodeForDelete->next;
 		Node* nodeAfterNodeForDelete = nodeForDelete->next;
@@ -301,20 +297,17 @@ public:
 			nodeAfterNodeForDelete->last = nodeForDelete->last;
 		}
 
-
-
-
 		delete nodeForDelete;
 	}
 
 	Iterator begin()
 	{
-
+		return Iterator(headNode);
 	}
 
 	Iterator end()
 	{
-		
+		return Iterator(nullptr);
 	}
 
 	class Node
@@ -325,73 +318,78 @@ public:
 
 		T element;
 
-		Node(T _element) :next(nullptr),last(nullptr)
+		Node(T _element) :next(nullptr), last(nullptr)
 		{
 			element = _element;
 		}
-	};
 
+	};
 
 	class Iterator
 	{
+		Node* current;
+
+	public:
+		Iterator(Node* node = nullptr) : current(node) {}
+
+		T& operator* ()
+		{
+			return current->element;
+		}
+
+		Iterator& operator++()
+		{
+			current = current->next;
+			return *this;
+		}
+
+		bool operator!=(const Iterator& other) const
+		{
+			return current != other.current;
+		}
 
 	};
-
 };
 
 void showList()
 {
-	std::list <int> list;
-	
-	customList<int> customList;
-	
-	customList.pushBack(0);
-	customList.pushBack(-1);
-	customList.pushBack(-2);
+	customList<int> list;
 
-	customList.pushFront(1);
-	customList.pushFront(2);
-	customList.pushFront(3);
+	customList<int>::Iterator ListIterator;
 
+	ListIterator = list.begin();
 
-	showText("--------", "");
-	customList.testShow();
-	showText("--------", "");
+	list.erase(ListIterator);
 
-	customList.remove(3);
-	customList.testShow();
+	std::list<int>::iterator iter;
 
-	customList.pushFront(3);
-	customList.testShow();
+	list.pushFront(1);
+	list.pushFront(2);
+	list.pushFront(3);
 
-	/*showText("Work of list", "");
-	showText(list.size(), " - Size of list");
+	list.pushBack(-1);
+	list.pushBack(-2);
+	list.pushBack(-3);
 
-	list.resize(2);
+	showText("Elements in customlist after use push front and push back", "");
 
+	for (const int element : list)
+		showText(element, "");
 
-	showText(list.size(), " - Size after resize list");
-	showText("--------------", "");
+	list.popBack();
+	list.popFront();
 
-	for (const int i : list)
-		showText(i, " - Elements of empty list");
+	list.remove(1);
 
-	list.push_back(1);
+	showText("Elements in customList after use pop back and pop front and remove 1 ", "");
 
-	showText("Elements of list after push back 1", "");
+	for (const int element : list)
+		showText(element, "");
 
-	for (const int i : list)
-		showText(i, "");
-
-	list.push_front(2);
-
-	showText("Elements of list after push front 2", "");
-
-	for (const int i : list)
-		showText(i, "");*/
 
 	pauseAndClear;
 }
+
 #pragma endregion
 
 #pragma region set
@@ -516,6 +514,7 @@ void showMultiset()
 #pragma endregion
 
 #pragma region map
+
 void showMap()
 {
 	pauseAndClear;
