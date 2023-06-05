@@ -246,14 +246,36 @@ public:
 		}
 	}
 
-	void erase(Iterator& beginPositionIter)
+	void erase(Iterator& positionIter)
 	{
-		std::cout << "o\n";
-		if(beginPositionIter == end())
-		for (Iterator iter = beginPositionIter; iter != end(); ++iter)
+		if (positionIter == nullptr)
 		{
-			T element = *iter;
-			std::cout << element;
+			throw std::exception();
+			return;
+		}
+
+		
+
+		for (Iterator iter = begin(); iter != end(); ++iter)
+		{
+			if (*iter == *positionIter)
+			{
+				Node* last = --iter.current;
+				Node* current = ++iter.current;
+				Node* next = current->next;
+
+				last->next = next;
+				next->last = last;
+
+				
+				std::cout << "Elenebt " << *positionIter;
+
+				
+				
+			}
+
+			
+			
 		}
 	}
 
@@ -327,9 +349,8 @@ public:
 
 	class Iterator
 	{
-		Node* current;
-
 	public:
+		Node* current;
 		Iterator(Node* node = nullptr) : current(node) {}
 
 		T& operator* ()
@@ -343,9 +364,20 @@ public:
 			return *this;
 		}
 
+		Iterator& operator--()
+		{
+			current = current->last;
+			return *this;
+		}
+
 		bool operator!=(const Iterator& other) const
 		{
 			return current != other.current;
+		}
+
+		bool operator==(const Iterator& other) const
+		{
+			return current == other.current;
 		}
 
 	};
@@ -357,12 +389,6 @@ void showList()
 
 	customList<int>::Iterator ListIterator;
 
-	ListIterator = list.begin();
-
-	list.erase(ListIterator);
-
-	std::list<int>::iterator iter;
-
 	list.pushFront(1);
 	list.pushFront(2);
 	list.pushFront(3);
@@ -370,6 +396,10 @@ void showList()
 	list.pushBack(-1);
 	list.pushBack(-2);
 	list.pushBack(-3);
+
+	ListIterator = list.begin();
+
+	list.erase(++ListIterator);
 
 	showText("Elements in customlist after use push front and push back", "");
 
