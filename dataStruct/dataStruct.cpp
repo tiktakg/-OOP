@@ -217,7 +217,6 @@ public:
 			newNode->next = headNode;
 			headNode = newNode;
 		}
-
 	}
 
 	void popBack()
@@ -226,9 +225,16 @@ public:
 		{
 			Node* nodeForDelete = headNode;
 
-			headNode = headNode->next;
-			headNode->last = nullptr;
-
+			if (headNode->next != nullptr)
+			{
+				headNode = headNode->next;
+				headNode->last = nullptr;
+			}
+			else
+			{
+				lastNode = nullptr;
+				headNode = nullptr;
+			}
 			delete nodeForDelete;
 		}
 	}
@@ -239,14 +245,55 @@ public:
 		{
 			Node* nodeForDelete = lastNode;
 
-			lastNode = lastNode->last;
-			lastNode->next = nullptr;
+			if (lastNode->last != nullptr)
+			{
+				lastNode = lastNode->last;
+				lastNode->next = nullptr;
+			}
+			else
+			{
+				lastNode = nullptr;
+				headNode = nullptr;
+			}
 
 			delete nodeForDelete;
 		}
 	}
 
-	void erase(Iterator& positionIter)
+	void erase(Iterator positionIter)
+	{
+		if (positionIter == nullptr)
+			positionIter = lastNode; // Жирный костыль, не знал, что lastNode должен указываьт на псвдопоследний элемент а не на null
+
+		for (Iterator iter = begin(); iter != end(); ++iter)
+			if (iter == positionIter)
+			{
+				Node* current = iter.current;
+				Node* last = current->last;
+				Node* next = current->next;
+
+				if (current == headNode)
+				{
+					headNode = next;
+					headNode->last = nullptr;
+				}
+				else if (current == lastNode)
+				{
+					lastNode = last;
+					lastNode->next = nullptr;
+				}
+				else
+				{
+					last->next = next;
+					next->last = last;
+				}
+
+				delete current;
+				break;
+			}
+	}
+
+	void erase(Iterator positionIter, Iterator endPositionIter)
 	{
 		if (positionIter == nullptr)
 		{
@@ -254,33 +301,57 @@ public:
 			return;
 		}
 
+		if (endPositionIter == nullptr)
+			endPositionIter = lastNode;
+
+		Iterator iter = begin();
+
+		Node* current = iter.current;
+		Node* last = nullptr;
+		Node* next = nullptr;
 		
 
-		for (Iterator iter = begin(); iter != end(); ++iter)
+		for (; iter != end();)
 		{
-			if (*iter == *positionIter)
+			if (iter == positionIter)
+				last = current->last;
+			if (iter == endPositionIter)
+				next = current->next;
+
+			if (last != nullptr and next != current)
 			{
-				Node* last = --iter.current;
-				Node* current = ++iter.current;
-				Node* next = current->next;
+				Node* nextCurrent = current->next;
 
-				last->next = next;
-				next->last = last;
+				delete current;
 
-				
-				std::cout << "Elenebt " << *positionIter;
-
-				
-				
+				iter = nextCurrent;
+				current = nextCurrent;
 			}
-
-			
-			
+			else
+			{
+				++iter;
+				current = iter.current;
+			}
 		}
-	}
 
-	void erase(Iterator& beginPositionIter, Iterator endPositionIter)
-	{
+		if (positionIter.current == headNode)
+		{
+			headNode = next;
+			headNode->last = nullptr;
+
+		}
+		else if (endPositionIter.current == lastNode)
+		{
+			lastNode = last;
+			lastNode->next = nullptr;
+
+		}
+		else
+		{
+			last->next = next;
+			next->last = last;
+
+		}
 
 	}
 
@@ -293,13 +364,26 @@ public:
 		Node* nodeBeforeNodeForDelete = nodeForDelete->next;
 		Node* nodeAfterNodeForDelete = nodeForDelete->next;
 
+		while (nodeForDelete != nullptr)
+		{
+			if (nodeForDelete->element == element)
+				break;
+
+			nodeForDelete = nodeForDelete->next;
+		}
+
+		if (nodeForDelete == nullptr)
+			return;
+		else
+			nodeForDelete = headNode;
+
+
 		while (nodeForDelete->element != element)
 		{
 			nodeForDelete = nodeForDelete->next;
-			nodeAfterNodeForDelete = nodeForDelete->next;
 			nodeBeforeNodeForDelete = nodeForDelete->last;
+			nodeAfterNodeForDelete = nodeForDelete->next;
 		}
-
 
 		if (nodeForDelete == headNode)
 		{
@@ -344,13 +428,13 @@ public:
 		{
 			element = _element;
 		}
-
 	};
 
 	class Iterator
 	{
 	public:
 		Node* current;
+
 		Iterator(Node* node = nullptr) : current(node) {}
 
 		T& operator* ()
@@ -388,6 +472,7 @@ void showList()
 	customList<int> list;
 
 	customList<int>::Iterator ListIterator;
+	customList<int>::Iterator ListIteratorKos;
 
 	list.pushFront(1);
 	list.pushFront(2);
@@ -397,11 +482,25 @@ void showList()
 	list.pushBack(-2);
 	list.pushBack(-3);
 
-	ListIterator = list.begin();
-
-	list.erase(++ListIterator);
 
 	showText("Elements in customlist after use push front and push back", "");
+
+	for (const int element : list)
+		showText(element, "");
+
+	ListIterator = list.begin();
+	ListIteratorKos = list.begin();
+
+	++ListIteratorKos;
+	++ListIteratorKos;
+	++ListIteratorKos;
+	++ListIteratorKos;
+	
+	list.erase(++ListIterator, ListIteratorKos);
+
+	showText("Elements in customlist after use erase with iterator", "");
+
+	pauseAndClear;
 
 	for (const int element : list)
 		showText(element, "");
@@ -416,6 +515,14 @@ void showList()
 	for (const int element : list)
 		showText(element, "");
 
+
+	showText("Push elements", "");
+
+	list.pushBack(-2);
+	list.pushFront(3);
+
+	for (const int element : list)
+		showText(element, "");
 
 	pauseAndClear;
 }
